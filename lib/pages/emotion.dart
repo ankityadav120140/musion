@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,7 +13,7 @@ class EmotionScreen extends StatefulWidget {
 }
 
 class _EmotionScreenState extends State<EmotionScreen> {
-  String output = '';
+  String output = "";
   List prediction = [];
   @override
   void initState() {
@@ -32,47 +29,21 @@ class _EmotionScreenState extends State<EmotionScreen> {
       // path: "assets/vkSmile.jpg",
     ))!;
 
-    print("Pred0********${prediction[0]}*************");
-    print(prediction.length);
-    print("Pred1********${prediction[1]}*************");
+    // print("Pred0********${prediction[0]}*************");
+    print("Prediction length : ${prediction.length}");
+    // print("Pred1********${prediction[1]}*************");
 
     setState(() {
       output = prediction[0]['label'];
       print(output);
     });
 
-    if (output == '1 Sad') {
-      const url = 'https://www.youtube.com/results?search_query=sad+song';
-      final Uri _url = Uri.parse(url);
-      if (!await launchUrl(_url)) {
-        throw Exception('Could not launch $_url');
-      }
-    } else {
-      const url = 'https://www.youtube.com/results?search_query=happy+song';
-      final Uri _url = Uri.parse(url);
-      if (!await launchUrl(_url)) {
-        throw Exception('Could not launch $_url');
-      }
+    final url =
+        "https://www.youtube.com/results?search_query=$output+mood+songs";
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
     }
-
-    // if (prediction[0]['confidence'] - prediction[1]['confidence'] < 0) {
-    //   setState(() {
-    //     output = "Happy";
-    //     // prediction.clear();
-    //   });
-    // } else {
-    //   setState(() {
-    //     output = "Sad";
-    //     // prediction.clear();
-    //   });
-    // }
-    // for (var element in prediction) {
-    //   setState(() {
-
-    //     output = element['label'];
-    //   });
-    //   print("******test:$element*******");
-    // }
   }
 
   loadModel() async {
